@@ -17,9 +17,9 @@ export default function Data() {
                     <>
                       <Text style={styles.title}>Ese pokemon no existe </Text>
                     </>
-            )}
+              )}
 
-            {pokemon && (
+            {found && pokemon && (
                 <>
                     <Text style={styles.title}>Informacion de: {pokemon.nombre}</Text>
                     <Stats />
