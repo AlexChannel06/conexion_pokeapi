@@ -6,10 +6,10 @@ import Stats from '@/components/stats';
 
 
 export default function Data() {
-    const { pokemon, loading, found } = useContext(PokeContext);
+    const { pokemon, loading, found, search } = useContext(PokeContext);
     return (
         <View style={styles.container}>
-            <LookBar />
+            <LookBar onPress={search}/>
 
             {loading && <Text style={styles.text}>Cargando...</Text>}
 
@@ -21,7 +21,7 @@ export default function Data() {
 
             {found && pokemon && (
                 <>
-                    <Text style={styles.title}>Informacion de: {pokemon.nombre}</Text>
+                    <Text style={styles.title}>Informacion de: {pokemon.NOMBRE}</Text>
                     <Stats />
 
                 </>

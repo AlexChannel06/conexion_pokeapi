@@ -1,26 +1,41 @@
 import { useState, useContext } from "react";
 import { View, TextInput, Button, StyleSheet } from "react-native";
 import { PokeContext } from "@/context/pokecontext";
+import { DragonContext } from "@/context/dragoncontext";
 
-export default function LookBar() {
+type Props = {
+    onPress?: (nombre: string) => void;
+}
+
+export default function LookBar({ onPress }: Props) {
     const [nombre, setNombre] = useState('');
-    const { search, loading } = useContext(PokeContext);
 
-    const pokeDex = () => {
-        if (nombre.trim() === '') return;
-        search(nombre.toLowerCase());
+    const { loading: pokeLoading } = useContext(PokeContext);
+    const { loading: dragonLoading } = useContext(DragonContext);
+
+    const isLoading = pokeLoading || dragonLoading;
+
+    const handlePress = () => {
+        const query = nombre.trim().toLowerCase();
+        if (query === '') return;
+
+        onPress?.(query);
     }
 
     return (
         <View style={styles.input}>
             <TextInput
-                placeholder="Pokemon"
+                placeholder="Nombre"
                 value={nombre}
                 onChangeText={setNombre}
                 style={styles.bar}
             />
             <View style={styles.button}>
-                <Button title={loading ? '...' : 'Buscar'} onPress={pokeDex} />
+                <Button
+                    title={isLoading ? '...' : 'Buscar'}
+                    onPress={handlePress}
+                    disabled={isLoading}
+                />
             </View>
         </View>
     );
@@ -47,7 +62,7 @@ const styles = StyleSheet.create({
         paddingLeft: '2%',
         paddingRight: '2%'
     },
-    button:{
+    button: {
         alignSelf: 'center',
         marginLeft: 'auto'
     }

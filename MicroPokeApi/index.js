@@ -3,7 +3,9 @@ const cors = require('cors');
 const { getSprites, getStats, getMoves, getTypes } = require('./funcs.js');
 const app = express();
 app.set('json spaces', 2);
-app.use(cors());
+app.use(cors());{
+  
+}
 app.use(express.json());
 
 app.get('/health', (req, res) => {
@@ -45,6 +47,30 @@ app.get('/pokemon/:nombre', async (req, res) => {
     res.status(500).json({ error: {error} });
   }
 });
+
+app.get('/dragon/:nombre', async(req, res) => {
+  const { nombre } = req.params;
+
+  const respuesta = await fetch(`https://dragonball-api.com/api/characters?name=${nombre}`);
+
+  if (!respuesta.ok) {
+    return res.status(404).json({ error: 'Personaje no encontrado' });
+  }
+
+  const data = await respuesta.json();
+  const character = data[0];
+  
+
+  const datacharacter = {
+    name: character.name,
+    race: character.race,
+    gender: character.gender,
+    ki: character.ki,
+    image: character.image
+  }
+
+  res.json(datacharacter);
+})
 
 const PORT = 3001;
 app.listen(PORT, () => {

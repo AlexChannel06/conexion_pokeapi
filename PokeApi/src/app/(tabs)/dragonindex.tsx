@@ -1,33 +1,27 @@
 import { Text, View, StyleSheet } from 'react-native';
 import { useContext } from "react";
-import { PokeContext } from "@/context/pokecontext";
+import { DragonContext } from "@/context/dragoncontext";
 import LookBar from '@/components/searchbar';
-import SpriteViewer from '@/components/sprites';
+import DragonViewer from '@/components/dragonimage';
 
-export default function Index() {
-  const { pokemon, loading, found, search } = useContext(PokeContext);
+export default function DragonScreen() {
+  const { character, loading, found, scout } = useContext(DragonContext);
 
   return (
     <View style={styles.container}>
-      <LookBar onPress={search}/>
+      <LookBar onPress={scout} />
 
       {loading && <Text style={styles.text}>Cargando...</Text>}
 
-      {!loading && found && pokemon && (
+      {!loading && found && character && (
         <>
-          <Text style={styles.title}>{pokemon.NOMBRE}</Text>
-          <SpriteViewer />
+          <Text style={styles.title}>{character.name}</Text>
+          <DragonViewer />
         </>
       )}
 
       {!loading && !found && (
-        <>
-          <Text style={styles.title}>Ese pokemon no existe </Text>
-        </>
-      )}
-
-      {!pokemon && !found && (
-        <Text style={styles.title}></Text>
+        <Text style={styles.title}>Ese personaje no existe</Text>
       )}
     </View>
   );
@@ -42,7 +36,7 @@ const styles = StyleSheet.create({
     paddingTop: 40,
   },
   text: {
-    color: '#fff',
+    color: '#000',
     fontSize: 16,
   },
   title: {
